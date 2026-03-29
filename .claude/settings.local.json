@@ -1,0 +1,31 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__Claude_Preview__preview_start",
+      "Bash(Get-Command npx, node, npm)",
+      "Bash(Select-Object Name, Source)",
+      "Bash(echo \"PATH=$PATH\")",
+      "Bash(dir \"C:\\\\Users\\\\Grind\\\\OneDrive\\\\Desktop\\\\Claude AI - Rocky 2.27.26\\\\FlightRest App\"\" && echo \"---ASSETS---\" && dir \"C:UsersGrindOneDriveDesktopClaude AI - Rocky 2.27.26FlightRest Appassets\" 2>nul || echo \"NO_ASSETS_FOLDER \")",
+      "Bash(cmd /c \"dir /b \"\"C:\\\\Users\\\\Grind\\\\OneDrive\\\\Desktop\\\\Claude AI - Rocky 2.27.26\\\\FlightRest App\"\"\")",
+      "Bash(\"C:\\\\Program Files\\\\nodejs\\\\npm.cmd\" install)",
+      "Bash(\"C:\\\\Program Files\\\\nodejs\\\\npm.cmd\" install --legacy-peer-deps)",
+      "Bash(\"C:\\\\Program Files\\\\nodejs\\\\npx.cmd\" expo start --non-interactive)",
+      "Bash(cmd /c \"set PATH=C:\\\\Program Files\\\\nodejs;%PATH% && cd \"\"C:\\\\Users\\\\Grind\\\\OneDrive\\\\Desktop\\\\Claude AI - Rocky 2.27.26\\\\FlightRest App\"\" && npx expo --version\")",
+      "Bash(\"C:\\\\Program Files\\\\nodejs\\\\node.exe\" \"C:\\\\Users\\\\Grind\\\\OneDrive\\\\Desktop\\\\Claude AI - Rocky 2.27.26\\\\FlightRest App\\\\node_modules\\\\.bin\\\\expo\" --version)",
+      "Bash(echo \"EXIT:$?\")",
+      "Bash(\"C:\\\\Program Files\\\\nodejs\\\\node.exe\" \"C:\\\\Users\\\\Grind\\\\OneDrive\\\\Desktop\\\\Claude AI - Rocky 2.27.26\\\\FlightRest App\\\\node_modules\\\\expo\\\\bin\\\\cli.js\" --version)",
+      "Bash(cmd /c \"cd /d \"\"C:\\\\Users\\\\Grind\\\\OneDrive\\\\Desktop\\\\Claude AI - Rocky 2.27.26\\\\FlightRest App\"\" && \"\"C:\\\\Program Files\\\\nodejs\\\\npm.cmd\"\" install 2>&1\")",
+      "Bash(\"C:/Program Files/nodejs/npm.cmd\" --version)",
+      "Bash(\"/c/Program Files/nodejs/npm.cmd\" install)",
+      "Bash(\"/c/Program Files/nodejs/npx.cmd\" expo start --non-interactive)",
+      "Bash(PATH=\"/c/Program Files/nodejs:$PATH\" npx expo start --web --non-interactive)",
+      "Bash(PATH=\"/c/Program Files/nodejs:$PATH\" npx expo install react-native-web react-dom @expo/metro-runtime)",
+      "Bash(PATH=\"/c/Program Files/nodejs:$PATH\" npm install)",
+      "Bash(PATH=\"/c/Program Files/nodejs:$PATH\" npm install --save-dev sharp)",
+      "Bash(PATH=\"/c/Program Files/nodejs:$PATH\" node scripts/generate-assets.js)",
+      "Bash(PATH=\"/c/Program Files/nodejs:$PATH\" npm install --save-dev eas-cli)",
+      "WebFetch(domain:rockygibson94-ux.github.io)",
+      "Bash(PATH=\"/c/Program Files/nodejs:$PATH\" npx eas-cli whoami)"
+    ]
+  }
+}

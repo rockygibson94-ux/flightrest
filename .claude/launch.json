@@ -1,0 +1,35 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "API Proxy",
+      "runtimeExecutable": "C:\\Program Files\\nodejs\\node.exe",
+      "runtimeArgs": ["proxy.js"],
+      "port": 3001
+    },
+    {
+      "name": "Expo Dev Server",
+      "runtimeExecutable": "C:\\Windows\\System32\\cmd.exe",
+      "runtimeArgs": ["/c", "C:\\Users\\Grind\\OneDrive\\Desktop\\Claude AI - Rocky 2.27.26\\FlightRest App\\start-expo.bat"],
+      "port": 8081
+    },
+    {
+      "name": "Expo Web",
+      "runtimeExecutable": "C:\\Windows\\System32\\cmd.exe",
+      "runtimeArgs": ["/c", "C:\\Users\\Grind\\OneDrive\\Desktop\\Claude AI - Rocky 2.27.26\\FlightRest App\\start-expo-web.bat"],
+      "port": 19006
+    },
+    {
+      "name": "Expo iOS",
+      "runtimeExecutable": "C:\\Windows\\System32\\cmd.exe",
+      "runtimeArgs": ["/c", "set PATH=C:\\Program Files\\nodejs;%PATH% && npx expo start --ios"],
+      "port": 8081
+    },
+    {
+      "name": "Expo Android",
+      "runtimeExecutable": "C:\\Windows\\System32\\cmd.exe",
+      "runtimeArgs": ["/c", "set PATH=C:\\Program Files\\nodejs;%PATH% && npx expo start --android"],
+      "port": 8081
+    }
+  ]
+}
