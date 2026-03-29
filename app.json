@@ -21,7 +21,8 @@
           "remote-notification"
         ],
         "NSLocationWhenInUseUsageDescription": "FlightRest uses your location to estimate drive time to the airport.",
-        "NSUserNotificationsUsageDescription": "FlightRest needs notifications to deliver your wake-up alarm."
+        "NSUserNotificationsUsageDescription": "FlightRest needs notifications to deliver your wake-up alarm.",
+        "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {
@@ -37,6 +38,7 @@
         "USE_EXACT_ALARM"
       ]
     },
+    "platforms": ["ios", "android"],
     "plugins": [
       "expo-router",
       [
@@ -45,7 +47,9 @@
           "icon": "./assets/icon.png",
           "color": "#4f8ef7"
         }
-      ]
+      ],
+      "expo-task-manager",
+      "expo-background-fetch"
     ],
     "scheme": "flightrest",
     "experiments": {
