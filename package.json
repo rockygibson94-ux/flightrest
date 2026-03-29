@@ -7,7 +7,7 @@
     "android": "expo run:android",
     "ios": "expo run:ios",
     "web": "expo start --web",
-    "eas-build-pre-install": "node -e \"const fs=require('fs');fs.mkdirSync('.expo/web',{recursive:true});console.log('Created .expo/web')\""
+    "eas-build-pre-install": "rm -rf .expo; mkdir -p .expo/web; echo 'Created .expo/web OK'"
   },
   "dependencies": {
     "@expo-google-fonts/space-mono": "^0.2.3",
