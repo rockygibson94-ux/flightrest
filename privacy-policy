@@ -1,0 +1,31 @@
+FlightRest Privacy Policy
+Last updated: March 28, 2026
+
+FlightRest ("we", "our", or "the app") is a smart alarm clock for early-morning flights. This policy explains what data we access, what we do with it, and what we never do.
+
+Data We Access
+Flight number — entered by you, used to look up your flight status via the FlightAware AeroAPI. Never stored on our servers (we have no servers).
+Airport security wait times — fetched anonymously from the MyTSA Web Service and ATL Airport. No personal information is sent in these requests.
+Morning routine preferences — drive time, get-ready time, boarding zone, etc. Stored only on your device using local storage. Never transmitted.
+Data We Do Not Collect
+We do not create user accounts.
+We do not collect your name, email, or any identifying information.
+We do not track your location.
+We do not use analytics or advertising SDKs.
+We do not sell or share any data with third parties.
+Third-Party Services
+FlightRest communicates with the following external services on your behalf:
+
+FlightAware AeroAPI — to look up live flight status, gate, and boarding time. Only your flight number is sent. See FlightAware's privacy policy at flightaware.com/about/privacy.
+MyTSA Web Service (U.S. DHS) — to retrieve security wait times by airport code. No personal data is sent.
+Notifications
+FlightRest uses local device notifications to deliver your wake-up alarm. These notifications are scheduled entirely on your device and are never routed through our servers.
+
+Children's Privacy
+FlightRest is not directed at children under 13 and does not knowingly collect information from children.
+
+Changes to This Policy
+If we update this policy, we will update the "Last updated" date above. Continued use of the app after changes constitutes acceptance of the updated policy.
+
+Contact
+Questions? Reach us at the email address on file with Apple App Store Connect.
