@@ -42,12 +42,20 @@
     "plugins": [
       "expo-router",
       [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#0a0a0f",
+          "image": "./assets/icon.png",
+          "imageWidth": 180
+        }
+      ],
+      [
         "expo-notifications",
         {
           "icon": "./assets/icon.png",
           "color": "#4f8ef7"
         }
-      ],
+      ]
     ],
     "scheme": "flightrest",
     "experiments": {
