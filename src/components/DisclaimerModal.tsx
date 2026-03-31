@@ -267,18 +267,22 @@ const styles = StyleSheet.create({
     marginBottom: Space.sm,
   },
   footer: {
-    padding: Space.lg,
-    paddingBottom: 40,
+    paddingHorizontal: Space.lg,
+    paddingTop: Space.lg,
+    paddingBottom: 48,
     borderTopWidth: 1,
     borderTopColor: Colors.border,
     backgroundColor: Colors.surface,
     gap: Space.sm,
+    alignItems: 'stretch',
   },
   agreeBtn: {
     backgroundColor: Colors.accent,
     borderRadius: Radius.lg,
-    paddingVertical: Space.md,
+    paddingVertical: 16,
     alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
   },
   agreeBtnDisabled: {
     backgroundColor: Colors.border,
@@ -288,6 +292,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#fff',
     fontWeight: '700',
+    textAlign: 'center',
   },
   footerNote: {
     fontFamily: Font.mono,
@@ -295,5 +300,6 @@ const styles = StyleSheet.create({
     color: Colors.textMuted,
     textAlign: 'center',
     lineHeight: 16,
+    width: '100%',
   },
 });
