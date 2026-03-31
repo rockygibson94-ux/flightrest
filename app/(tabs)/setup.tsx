@@ -142,24 +142,47 @@ export default function SetupScreen() {
         </Section>
       )}
 
-      {/* ── Gate ── */}
-      <Section title="Gate">
-        <View style={styles.gateRow}>
-          <TextInput
-            style={[styles.input, styles.inputFlex]}
-            value={setup.gateNumber}
-            onChangeText={(v) => updateSetup({ gateNumber: v.toUpperCase() })}
-            placeholder="e.g. E14"
-            placeholderTextColor={Colors.textMuted}
-            autoCapitalize="characters"
-            maxLength={6}
-          />
-          {flight?.gate && setup.gateNumber === flight.gate && (
-            <View style={styles.autoFilledBadge}>
-              <Text style={styles.autoFilledText}>✓ Auto-filled</Text>
-            </View>
-          )}
+      {/* ── Gate & Terminal ── */}
+      <Section title="Gate & Terminal">
+        {/* Terminal — auto-filled from FlightAware, read-only */}
+        <View style={styles.autoRow}>
+          <Text style={styles.autoLabel}>Terminal</Text>
+          <View style={styles.autoValueWrap}>
+            <Text style={[styles.autoValue, !flight?.terminal && styles.autoValueMuted]}>
+              {flight?.terminal ?? (flight ? 'Not yet assigned' : '—')}
+            </Text>
+            {flight?.terminal && (
+              <View style={styles.autoFilledBadge}>
+                <Text style={styles.autoFilledText}>✓ Live</Text>
+              </View>
+            )}
+          </View>
         </View>
+
+        {/* Gate — auto-filled when available, editable as override */}
+        <View style={styles.autoRow}>
+          <Text style={styles.autoLabel}>Gate</Text>
+          <View style={styles.autoValueWrap}>
+            <TextInput
+              style={[styles.gateInput, flight?.gate === setup.gateNumber && flight?.gate ? styles.gateInputAutoFilled : null]}
+              value={setup.gateNumber}
+              onChangeText={(v) => updateSetup({ gateNumber: v.toUpperCase() })}
+              placeholder={flight ? (isLoadingFlight ? 'Fetching…' : 'Not yet assigned') : 'e.g. E14'}
+              placeholderTextColor={Colors.textMuted}
+              autoCapitalize="characters"
+              maxLength={6}
+            />
+            {flight?.gate && setup.gateNumber === flight.gate && (
+              <View style={styles.autoFilledBadge}>
+                <Text style={styles.autoFilledText}>✓ Live</Text>
+              </View>
+            )}
+          </View>
+        </View>
+
+        <Text style={styles.autoHint}>
+          Gate and terminal are pulled automatically from live flight data. You can override the gate if needed.
+        </Text>
       </Section>
 
       {/* ── Boarding Zone ── */}
@@ -336,7 +359,14 @@ const styles = StyleSheet.create({
   stepPillTextSelected: { color: Colors.accent },
   homeBtn: { backgroundColor: Colors.accent, borderRadius: Radius.lg, paddingVertical: Space.md, alignItems: 'center' },
   homeBtnText: { fontFamily: Font.mono, fontSize: 15, color: '#fff', fontWeight: '700' },
-  gateRow: { flexDirection: 'row', alignItems: 'center', gap: Space.sm },
+  autoRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', minHeight: 36 },
+  autoLabel: { fontFamily: Font.mono, fontSize: 12, color: Colors.textSecondary, width: 72 },
+  autoValueWrap: { flex: 1, flexDirection: 'row', alignItems: 'center', gap: Space.sm, justifyContent: 'flex-end' },
+  autoValue: { fontFamily: Font.mono, fontSize: 14, color: Colors.textPrimary },
+  autoValueMuted: { color: Colors.textMuted, fontSize: 12 },
+  gateInput: { fontFamily: Font.mono, fontSize: 14, color: Colors.textPrimary, backgroundColor: Colors.surfaceAlt, borderRadius: Radius.sm, borderWidth: 1, borderColor: Colors.border, paddingHorizontal: 10, paddingVertical: 6, minWidth: 80, textAlign: 'center' },
+  gateInputAutoFilled: { borderColor: Colors.accent, backgroundColor: Colors.accentDim },
+  autoHint: { fontFamily: Font.mono, fontSize: 10, color: Colors.textMuted, lineHeight: 15, marginTop: 2 },
   autoFilledBadge: { backgroundColor: Colors.accentDim, borderRadius: Radius.sm, borderWidth: 1, borderColor: Colors.accent, paddingHorizontal: 8, paddingVertical: 4 },
   autoFilledText: { fontFamily: Font.mono, fontSize: 11, color: Colors.accent },
 });

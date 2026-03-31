@@ -53,6 +53,18 @@ export function useFlight() {
       const updatedFlight = { ...flight, ...updates };
       setFlight(updatedFlight);
 
+      // Re-apply gate/concourse/terminal if FlightAware now has data it didn't before
+      const refreshSetupUpdates: Partial<typeof setup> = {};
+      if (updatedFlight.gate && updatedFlight.gate !== setup.gateNumber) {
+        refreshSetupUpdates.gateNumber = updatedFlight.gate;
+      }
+      if (updatedFlight.concourse && updatedFlight.concourse !== setup.concourse) {
+        refreshSetupUpdates.concourse = updatedFlight.concourse;
+      }
+      if (Object.keys(refreshSetupUpdates).length > 0) {
+        updateSetup(refreshSetupUpdates);
+      }
+
       // Recalculate alarm if flight changed
       if (alarm?.isActive && setup.smartAlerts.autoAdjustDelays) {
         const newBreakdown = calculateAlarm({
