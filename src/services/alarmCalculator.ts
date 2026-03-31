@@ -58,7 +58,7 @@ export function calculateAlarm(params: CalculateAlarmParams): AlarmBreakdown {
     gateWalkMinutes = 15; // generic default
   }
 
-  const securityWaitMinutes = getBestWaitMinutes(securityWaits, hasTSAPreCheck);
+  const securityWaitMinutes = getBestWaitMinutes(securityWaits, hasTSAPreCheck, flight.origin);
 
   const totalMinutesBeforeBoarding =
     boardingZoneOffset +

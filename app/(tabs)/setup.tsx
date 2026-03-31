@@ -83,8 +83,12 @@ export default function SetupScreen() {
               Departs {flight.estimatedDeparture.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })}
               {'  ·  '}Boards {flight.boardingTime.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })}
             </Text>
-            {flight.gate && (
-              <Text style={styles.confirmedLine}>Gate {flight.gate}</Text>
+            {(flight.gate || flight.terminal) && (
+              <Text style={styles.confirmedLine}>
+                {flight.terminal ? `Terminal ${flight.terminal}` : ''}
+                {flight.terminal && flight.gate ? '  ·  ' : ''}
+                {flight.gate ? `Gate ${flight.gate}` : ''}
+              </Text>
             )}
             <Text style={[styles.confirmedStatus, { color: flight.status === 'delayed' ? Colors.yellow : Colors.green }]}>
               {flight.status.replace('_', ' ').toUpperCase()}
@@ -140,15 +144,22 @@ export default function SetupScreen() {
 
       {/* ── Gate ── */}
       <Section title="Gate">
-        <TextInput
-          style={styles.input}
-          value={setup.gateNumber}
-          onChangeText={(v) => updateSetup({ gateNumber: v.toUpperCase() })}
-          placeholder="e.g. E14  (auto-filled if FlightAware has it)"
-          placeholderTextColor={Colors.textMuted}
-          autoCapitalize="characters"
-          maxLength={6}
-        />
+        <View style={styles.gateRow}>
+          <TextInput
+            style={[styles.input, styles.inputFlex]}
+            value={setup.gateNumber}
+            onChangeText={(v) => updateSetup({ gateNumber: v.toUpperCase() })}
+            placeholder="e.g. E14"
+            placeholderTextColor={Colors.textMuted}
+            autoCapitalize="characters"
+            maxLength={6}
+          />
+          {flight?.gate && setup.gateNumber === flight.gate && (
+            <View style={styles.autoFilledBadge}>
+              <Text style={styles.autoFilledText}>✓ Auto-filled</Text>
+            </View>
+          )}
+        </View>
       </Section>
 
       {/* ── Boarding Zone ── */}
@@ -325,4 +336,7 @@ const styles = StyleSheet.create({
   stepPillTextSelected: { color: Colors.accent },
   homeBtn: { backgroundColor: Colors.accent, borderRadius: Radius.lg, paddingVertical: Space.md, alignItems: 'center' },
   homeBtnText: { fontFamily: Font.mono, fontSize: 15, color: '#fff', fontWeight: '700' },
+  gateRow: { flexDirection: 'row', alignItems: 'center', gap: Space.sm },
+  autoFilledBadge: { backgroundColor: Colors.accentDim, borderRadius: Radius.sm, borderWidth: 1, borderColor: Colors.accent, paddingHorizontal: 8, paddingVertical: 4 },
+  autoFilledText: { fontFamily: Font.mono, fontSize: 11, color: Colors.accent },
 });

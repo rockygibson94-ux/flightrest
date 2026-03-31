@@ -13,6 +13,7 @@ export function useFlight() {
     alarm,
     setFlight,
     setAlarm,
+    updateSetup,
     setLoadingFlight,
     setFlightError,
   } = useFlightStore();
@@ -24,13 +25,25 @@ export function useFlight() {
       try {
         const flightData = await fetchFlight(flightNumber);
         setFlight(flightData);
+
+        // Auto-populate setup fields from flight data
+        const setupUpdates: Partial<typeof setup> = {
+          airport: flightData.origin,
+        };
+        if (flightData.gate) {
+          setupUpdates.gateNumber = flightData.gate;
+        }
+        if (flightData.concourse) {
+          setupUpdates.concourse = flightData.concourse;
+        }
+        updateSetup(setupUpdates);
       } catch (err) {
         setFlightError(err instanceof Error ? err.message : 'Failed to fetch flight');
       } finally {
         setLoadingFlight(false);
       }
     },
-    [setFlight, setLoadingFlight, setFlightError]
+    [setFlight, updateSetup, setLoadingFlight, setFlightError]
   );
 
   const refresh = useCallback(async () => {

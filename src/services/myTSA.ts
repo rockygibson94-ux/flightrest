@@ -105,20 +105,84 @@ export async function fetchSecurityWaits(airportCode: string): Promise<SecurityW
   return atlLive.length > 0 ? [...atlLive, ...myTSA] : myTSA;
 }
 
+// ─── Historical wait time model ───────────────────────────────────────────────
+// Used silently when live data is stale (>30 min old) or unavailable.
+// Based on time-of-day, day-of-week, and airport size.
+
+const BUSY_AIRPORTS = new Set([
+  'ATL','LAX','ORD','JFK','LGA','EWR','DFW','DEN','SFO','SEA','BOS','MIA','PHX','MSP','DTW',
+]);
+const MEDIUM_AIRPORTS = new Set([
+  'CLT','MCO','LAS','IAH','HOU','MDW','BWI','IAD','DCA','SAN','TPA','PDX','SLC','STL','MCI',
+]);
+
+function getHistoricalWaitMinutes(airportCode: string, hour: number, dayOfWeek: number): number {
+  // Base wait by time of day (hour = local 0–23)
+  let base: number;
+  if (hour >= 4 && hour < 7)       base = 38;  // early morning rush
+  else if (hour >= 7 && hour < 10) base = 48;  // peak morning
+  else if (hour >= 10 && hour < 15) base = 26; // midday
+  else if (hour >= 15 && hour < 19) base = 42; // afternoon peak
+  else if (hour >= 19 && hour < 22) base = 22; // evening wind-down
+  else                              base = 10; // overnight / red-eye
+
+  // Day-of-week multiplier (0=Sun … 6=Sat)
+  const dayMult: Record<number, number> = {
+    0: 1.3,  // Sunday
+    1: 1.4,  // Monday — business travel peak
+    2: 1.0,
+    3: 1.0,
+    4: 1.1,
+    5: 1.4,  // Friday — weekend rush
+    6: 1.2,  // Saturday
+  };
+
+  // Airport-size multiplier
+  const ap = airportCode.toUpperCase();
+  const airportMult = BUSY_AIRPORTS.has(ap) ? 1.3 : MEDIUM_AIRPORTS.has(ap) ? 1.1 : 1.0;
+
+  // Conservative buffer for current TSA staffing shortage
+  const shortageMult = 1.25;
+
+  return Math.round(base * (dayMult[dayOfWeek] ?? 1.0) * airportMult * shortageMult);
+}
+
+const STALE_THRESHOLD_MS = 30 * 60_000; // 30 minutes
+
 /**
  * Returns a single representative wait time (minutes) for the alarm calculation.
- * Uses the shortest non-zero wait from available checkpoints, or a default.
+ * When live data is stale or missing, silently falls back to a time-of-day
+ * historical model so the alarm stays accurate without alarming the user.
  */
-export function getBestWaitMinutes(waits: SecurityWait[], hasTSAPreCheck: boolean): number {
-  if (!waits.length) return 22; // conservative default
+export function getBestWaitMinutes(
+  waits: SecurityWait[],
+  hasTSAPreCheck: boolean,
+  airportCode = 'ATL',
+): number {
+  const now = new Date();
+  const cutoff = new Date(now.getTime() - STALE_THRESHOLD_MS);
 
-  const nonZero = waits.filter((w) => w.waitMinutes > 0);
-  if (!nonZero.length) return 10;
+  // Only trust waits that are fresher than 30 minutes
+  const freshWaits = waits.filter((w) => w.updatedAt > cutoff);
 
-  // TSA PreCheck lanes are typically ~40% of standard wait
+  // If no fresh data → use historical model silently
+  if (!freshWaits.length) {
+    const historical = getHistoricalWaitMinutes(airportCode, now.getHours(), now.getDay());
+    return hasTSAPreCheck ? Math.round(historical * 0.4) : historical;
+  }
+
+  const nonZero = freshWaits.filter((w) => w.waitMinutes > 0);
+
+  // Fresh data exists but all checkpoints report zero — fall back to a blended value
+  if (!nonZero.length) {
+    const historical = getHistoricalWaitMinutes(airportCode, now.getHours(), now.getDay());
+    const blended = Math.round(historical * 0.5); // split the difference
+    return hasTSAPreCheck ? Math.round(blended * 0.4) : blended;
+  }
+
+  // Normal path — use the best (shortest) live checkpoint
   const values = nonZero.map((w) =>
-    hasTSAPreCheck ? Math.round(w.waitMinutes * 0.4) : w.waitMinutes
+    hasTSAPreCheck ? Math.round(w.waitMinutes * 0.4) : w.waitMinutes,
   );
-
   return Math.min(...values);
 }

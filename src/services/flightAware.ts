@@ -48,6 +48,8 @@ interface AeroFlightInfo {
   actual_out: string | null;
   gate_origin: string | null;
   gate_destination: string | null;
+  terminal_origin: string | null;
+  terminal_destination: string | null;
   status: string;
   delay: number | null;    // minutes
 }
@@ -110,7 +112,7 @@ export async function fetchFlight(flightNumber: string): Promise<Flight> {
     boardingTime,
     gate,
     concourse,
-    terminal: null,
+    terminal: raw.terminal_origin ?? null,
     status: mapStatus(raw.status),
     delayMinutes,
   };
